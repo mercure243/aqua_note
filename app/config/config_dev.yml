@@ -11,6 +11,9 @@ web_profiler:
     toolbar: true
     intercept_redirects: false
 
+parameters:
+    cache_type: array
+
 monolog:
     handlers:
         main:
@@ -39,3 +42,8 @@ monolog:
 
 #swiftmailer:
 #    delivery_addresses: ['me@example.com']
+
+doctrine_cache:
+    providers:
+        my_markdown_cache:
+            type: %cache_type%
