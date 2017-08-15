@@ -1,0 +1,25 @@
+AppBundle\Entity\Genus:
+    genus_{1..10}:
+        name: <genus()>
+        subfamily: '@sub.family_*'
+        speciesCount: <numberBetween(100, 100000)>
+        funFact: <sentence()>
+        isPublished: <boolean(75)>
+        discoveredAt: <dateTimeBetween('-11 months','now')>
+
+AppBundle\Entity\GenusNote:
+    genus.note_{1..100}:
+        username: <userName()>
+        userAvatarFilename: '50%? leanna.jpeg : ryan.jpeg'
+        note: <paragraph()>
+        createdAt: <dateTimeBetween('-6 months','now')>
+        genus: '@genus_*'
+
+AppBundle\Entity\SubFamily:
+    sub.family_{1..10}:
+        name: <text(20)>
+
+AppBundle\Entity\User:
+    user_{1..10}:
+        email: hellhush+<current()>@gmail.com
+        plainPassword: iliketurtles

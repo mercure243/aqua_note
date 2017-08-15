@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Genus</th>
+                <th>SubFamily</th>
+                <th># of species</th>
+                <th>Fun fact</th>
+                <th>Last updated</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for genus in genuses %}
+          <tr>
+              <td><a href="{{ path('genus_show', {'genusName': genus.name})}}"> {{ genus.name }} </a></td>
+              <td>{{ genus.subFamily.name }}</td>
+              <td>{{ genus.speciesCount }}</td>
+              <td>{{ genus.funFact|markdownify }}</td>
+              <td>{{ genus.discoveredAt|date('Y-m-d') }}</td>
+              <td><a href="{{ path('admin_genus_edit', {'id': genus.id}) }}" class="btn btn-xs btn-success"><span class="fa fa-pencil"></span></a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+</table>
+
+{% endblock %}
