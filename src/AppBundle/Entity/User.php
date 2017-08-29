@@ -3,9 +3,13 @@ namespace AppBundle\Entity;
 use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
+ * @UniqueEntity(fields={"email"}, message="It looks like you already have an account!")
  */
 class User implements UserInterface
 {
@@ -17,6 +21,8 @@ class User implements UserInterface
     private $id;
     /**
      * @ORM\Column(type="string", unique=true)
+     * @Assert\NotBlank()
+     * @Assert\Email()
      */
     private $email;
     /**
@@ -27,10 +33,17 @@ class User implements UserInterface
     private $password;
     /**
      * A non-persisted field that's used to create the encoded password.
+     * @Assert\NotBlank(groups={"Registration"})
      *
      * @var string
      */
     private $plainPassword;
+
+    /**
+     * @ORM\Column(type="json_array")
+     */
+    private $roles;
+
     // needed by the security system
     public function getUsername()
     {
@@ -38,8 +51,29 @@ class User implements UserInterface
     }
     public function getRoles()
     {
-        return ['ROLE_USER'];
+        $roles = $this->roles;
+
+        if (!in_array('ROLE_USER', $roles)){
+            $roles[] = 'ROLE_USER';
+        }
+        return $roles;
+
+        /*
+        $roles = [];
+        // loop over some ManyToMany relation to a Group entity
+        foreach ($this->groups as $group) {
+            $roles = array_merge($roles, $group->getRoles());
+        }
+        return $roles;
+        */
     }
+
+    public function setRoles(array $roles)
+    {
+        $roles[] = 'ROLE_USER';
+        $this->roles = $roles;
+    }
+
     public function getPassword()
     {
         return $this->password;

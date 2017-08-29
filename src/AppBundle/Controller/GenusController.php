@@ -58,7 +58,7 @@ class GenusController extends Controller
     /**
     * @Route("/genus/{genusName}", name="genus_show")
     */
-    public function showAction($genusName)
+    public function showAction($genusName, MarkdownTransformer $markdownTransformer)
     {
         $funFact = 'Octopuses can change the color of their body in just *three-tenths* of a second!';
         $funFact = $this->get('markdown.parser')->transform($funFact);
@@ -70,8 +70,9 @@ class GenusController extends Controller
           throw $this->createNotFoundException('genus not found');
         }
 
-        $markdownParser = $this->get('app.markdown_transformer');
-        $funFact = $markdownParser->parse($genus->getFunFact());
+        //$markdownParser = $this->get('app.markdown_transformer');
+        //$markdownParser = $this->get(MarkdownTransformer::class);
+        $funFact = $markdownTransformer->parse($genus->getFunFact());
 
         /*
         $recentNotes = $genus->getNotes()->filter(function(GenusNote $note) {

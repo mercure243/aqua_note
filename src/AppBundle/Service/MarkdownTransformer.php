@@ -9,10 +9,10 @@ class MarkdownTransformer
     private $markdownParser;
     private $cache;
 
-    public function __construct(MarkdownParserInterface $markdownParser, Cache $cache)
+    public function __construct(MarkdownParserInterface $markdownParser, Cache $cacheDriver)
     {
         $this->markdownParser = $markdownParser;
-        $this->cache = $cache;
+        $this->cache = $cacheDriver;
     }
 
     public function parse($str)
